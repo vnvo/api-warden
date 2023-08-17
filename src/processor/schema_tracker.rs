@@ -42,14 +42,14 @@ impl SchemaTracker {
         self.schemas
             .entry(key)
             .and_modify(|sch| {
-                let v = tnx.resp.to_string();
-                let mut json_deserializer = serde_json::Deserializer::from_str(&v);
+                //let v = tnx.resp.to_string();
+                let mut json_deserializer = serde_json::Deserializer::from_str(tnx.resp.get());
                 sch.resp_schema = Option::<InferredSchema>::deserialize(&mut json_deserializer).unwrap();
 
                 //sch.resp_schema
             })
             .or_insert_with(|| {
-                let mut resp_inferred: InferredSchema = serde_json::from_value(tnx.resp.clone()).unwrap();
+                let resp_inferred: InferredSchema = serde_json::from_str(tnx.resp.get()).unwrap();
                 SchemaContainer{
                     req_hdr_schema: None, 
                     req_schema: None, 

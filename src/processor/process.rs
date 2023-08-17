@@ -1,6 +1,6 @@
 use serde::Deserialize;
 use serde::de::DeserializeSeed;
-use serde_json::{Value, Map as SMap};
+use serde_json::{value::RawValue, Map as SMap};
 use std::result::Result;
 use std::str::Split;
 use schema_analysis::InferredSchema;
@@ -32,20 +32,24 @@ pub struct ReqSchema(InferredSchema);
 } */
 
 #[derive(Deserialize, Debug)]
-pub struct  RESTTransaction {
+pub struct  RESTTransaction<'a> {
     pub source: String, //app-name-1
     pub method: String, // get,  post, ...
     pub uri: String, //http://blah.com/a/path
     //pub req_params: Value, //param1=value1 {"param1":"value1"}
-    pub req_hdr: Value,
-    pub req: Value,
-    pub resp_hdr: Value,
-    //#[serde(from = "InferredSchema")]
-    pub resp: Value,
-    pub ts: Value
+    #[serde(borrow)]
+    pub req_hdr: &'a RawValue,
+    #[serde(borrow)]    
+    pub req: &'a RawValue,
+    #[serde(borrow)]
+    pub resp_hdr: &'a RawValue,
+    #[serde(borrow)]
+    pub resp: &'a RawValue,
+    #[serde(borrow)]
+    pub ts: &'a RawValue
 }
 
-impl RESTTransaction {
+impl<'a>RESTTransaction<'a> {
     fn get_key(&self) -> String {
         format!(
             "{}-{}-{}", 
@@ -70,7 +74,7 @@ impl Processor {
         Processor { tracker: st }
     }   
 
-    pub fn process_transaction(&self, tnx: &str) -> Option<RESTTransaction> {
+    pub fn process_transaction<'a>(&'a self, tnx: &'a str) -> Option<RESTTransaction> {
         //let shallow_parsed: RESTTransaction = serde_json::from_str(tnx).unwrap();
         let shallow_res: Result<RESTTransaction, RESTParseError> = match serde_json::from_str(tnx) {
             Ok(v) => Ok(v),
