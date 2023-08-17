@@ -1,0 +1,37 @@
+--request-header--
+GET /api/users?page=2 HTTP/2
+Host: reqres.in
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/116.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate, br
+Referer: https://reqres.in/
+Connection: keep-alive
+Cookie: _ga=GA1.1.1759509745.1691001244; _gid=GA1.2.248856625.1691001244; _ga_CESXN06JTW=GS1.1.1691003382.2.1.1691003579.0.0.0; _ga_WSM10MMEKC=GS1.2.1691003564.2.0.1691003564.0.0.0; __stripe_mid=ff116d55-5f55-4c64-9f37-4a76f78ed692fbf41e; _gat=1; _gat_gtag_UA_174008107_1=1; __stripe_sid=f5e95057-8e9c-4f14-881c-082fb200f25d02706f
+Upgrade-Insecure-Requests: 1
+Sec-Fetch-Dest: document
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: same-origin
+Sec-Fetch-User: ?1
+If-None-Match: W/"406-ut0vzoCuidvyMf8arZpMpJ6ZRDw"
+TE: trailers
+--request-body--
+--response-header--
+HTTP/2 200 OK
+date: Wed, 02 Aug 2023 19:36:53 GMT
+content-type: application/json; charset=utf-8
+x-powered-by: Express
+access-control-allow-origin: *
+etag: W/"c5-hJoimgtl6KhaZadfgKS3TQ7g00U"
+via: 1.1 vegur
+cache-control: max-age=14400
+cf-cache-status: HIT
+age: 4368
+report-to: {"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=n3eQbYScTRhlwq54WIGA4E2%2BxNYYNH23TTAdDEM%2Bj5YlHAQNUgxU3bO3GrsOMDP7wd3Ad4RbeUfnSoBs9Ik4u9Q4wwZw0dg2vQgEdiVPFkpFZzBpvfB0uMueCg%3D%3D"}],"group":"cf-nel","max_age":604800}
+nel: {"success_fraction":0,"report_to":"cf-nel","max_age":604800}
+vary: Accept-Encoding
+server: cloudflare
+cf-ray: 7f08c5b90a5236dc-FRA
+content-encoding: br
+--response-body--
+{"page":2,"per_page":6,"total":12,"total_pages":2,"data":[{"id":7,"email":"michael.lawson@reqres.in","first_name":"Michael","last_name":"Lawson","avatar":"https://reqres.in/img/faces/7-image.jpg"},{"id":8,"email":"lindsay.ferguson@reqres.in","first_name":"Lindsay","last_name":"Ferguson","avatar":"https://reqres.in/img/faces/8-image.jpg"},{"id":9,"email":"tobias.funke@reqres.in","first_name":"Tobias","last_name":"Funke","avatar":"https://reqres.in/img/faces/9-image.jpg"},{"id":10,"email":"byron.fields@reqres.in","first_name":"Byron","last_name":"Fields","avatar":"https://reqres.in/img/faces/10-image.jpg"},{"id":11,"email":"george.edwards@reqres.in","first_name":"George","last_name":"Edwards","avatar":"https://reqres.in/img/faces/11-image.jpg"},{"id":12,"email":"rachel.howell@reqres.in","first_name":"Rachel","last_name":"Howell","avatar":"https://reqres.in/img/faces/12-image.jpg"}],"support":{"url":"https://reqres.in/#support-heading","text":"To keep ReqRes free, contributions towards server costs are appreciated!"}}
