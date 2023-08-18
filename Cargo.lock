@@ -58,7 +58,6 @@ dependencies = [
  "chrono",
  "env_logger",
  "json_typegen",
- "lazy_static",
  "log",
  "rdkafka",
  "schema_analysis",

@@ -11,7 +11,6 @@ path = "src/lib.rs"
 chrono = "0.4.26"
 env_logger = "0.10.0"
 json_typegen = "0.7.0"
-lazy_static = "1.4.0"
 log = "0.4.19"
 rdkafka = "0.33.2"
 schema_analysis = {version="0.5.0", features=["json_typegen"]}
