@@ -176,36 +176,53 @@ mod tests {
             "ts":12999884423423
         }"#;
         
+        //setup and seeding with the first sample
         let mut st = schema_tracker::SchemaTracker::new();
         let key = format!("{}_{}", "app-1", "http://test.app.com");
-        let mut inferred: InferredSchema = serde_json::from_str(tnx1).unwrap();
-        println!("{:?}", inferred.schema);
+        let tnx: RESTTransaction = serde_json::from_str(tnx1).unwrap();
+        let key = tnx.get_key();
+
+        //let inferred: InferredSchema = serde_json::from_str(tnx1).unwrap();
+        //println!("{:?}", inferred.schema);
         //let sch = schemars::schema_for_value!(y.schema);
         //println!("======\n{}\n======", serde_json::to_string(&sch).unwrap());
+
+        // update with additional samples
         for raw in vec![tnx2, tnx3] {
             //let mut json_deserializer = serde_json::Deserializer::from_str(raw);
             //let () = inferred.deserialize(&mut json_deserializer).unwrap();
             let tnx: RESTTransaction = serde_json::from_str(raw).unwrap();
-            let key = format!("{}_{}", "app-1", "http://test.app.com");
-            st.update(key.clone(), &tnx).unwrap();
+            //let key = format!("{}_{}", "app-1", "http://test.app.com");
+            let key = tnx.get_key();
+            st.update(key, &tnx).unwrap();
     
         }
-
+        /* 
         let shape: Shape = inferred.schema.to_json_typegen_shape();
         println!("=++++++\n{:?}\n=+++++", shape);
-        let output: String = inferred.schema.process_with_json_typegen(OutputMode::JsonSchema).unwrap();
-        println!("=++++++\n{}\n=+++++", output);
+        let output_j: String = inferred.schema.process_with_json_typegen(OutputMode::JsonSchema).unwrap();
+        println!("=++++++\n{}\n=+++++", output_j);
+        let output_ts: String = inferred.schema.process_with_json_typegen(OutputMode::Typescript).unwrap();
+        println!("=++++++\n{}\n=+++++", output_ts); */
 
         //let res = process_transaction(tnx1).unwrap();
         //assert_eq!(res.source, r"app-1");
 
     
+        // check the latest inferred schema with different outputs
         let v = st.get(key.as_str()).expect("");
-        let output: String = v.resp_schema.as_ref().unwrap().schema.process_with_json_typegen(OutputMode::JsonSchema).unwrap();
-
         println!("=++++++\n{:#?}\n=+++++", v);
-        println!("=++++**\n{}\n=+++**", output);
 
+        for output_mode in vec![OutputMode::JsonSchema, OutputMode::Typescript] {
+            let output: String = v.resp_schema
+            .as_ref()
+            .unwrap()
+            .schema
+            .process_with_json_typegen(output_mode.clone())
+            .unwrap();
+
+            println!("\n===== {:?} =====\n{}\n=====", output_mode, output);
+        }
 
     }
 
