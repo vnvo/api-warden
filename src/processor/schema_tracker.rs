@@ -35,9 +35,6 @@ impl SchemaTracker {
     }
     
     pub fn update (&mut self, key: String, tnx: &RESTTransaction) -> Result<(), SchemaTrackerErr> {
-        // given a sample transaction and key, update/insert the inferred schema
-
-        //self.schemas.insert(key, init_schema);
 
         self.schemas
             .entry(key)
@@ -46,7 +43,6 @@ impl SchemaTracker {
                 let mut json_deserializer = serde_json::Deserializer::from_str(tnx.resp.get());
                 sch.resp_schema = Option::<InferredSchema>::deserialize(&mut json_deserializer).unwrap();
 
-                //sch.resp_schema
             })
             .or_insert_with(|| {
                 let resp_inferred: InferredSchema = serde_json::from_str(tnx.resp.get()).unwrap();

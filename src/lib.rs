@@ -36,7 +36,7 @@ type APIWardenConsumer = StreamConsumer<CustomContext>;
 
 pub async fn consume_and_process(brokers: &str, group_id: &str, topics: &[&str]) {
 
-    let proc = Processor::new();
+    let mut proc = Processor::new();
 
     let context = CustomContext;
     let consumer: APIWardenConsumer = ClientConfig::new()
@@ -88,7 +88,10 @@ pub async fn consume_and_process(brokers: &str, group_id: &str, topics: &[&str])
                     }
                 }
 
-                proc.process_transaction(payload);
+                match proc.process_transaction(payload) {
+                    Ok(_) => {},
+                    Err(_) => eprintln!("error on processing payload"),
+                }
 
                 consumer.commit_message(&m, CommitMode::Async).unwrap();
             }

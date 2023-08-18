@@ -1,6 +1,7 @@
 use serde::Deserialize;
 use serde::de::DeserializeSeed;
-use serde_json::{value::RawValue, Map as SMap};
+use serde_json::value::RawValue;
+use std::error::Error;
 use std::result::Result;
 use std::str::Split;
 use schema_analysis::InferredSchema;
@@ -61,7 +62,7 @@ impl<'a>RESTTransaction<'a> {
 }
 
 #[derive(Deserialize, Debug)]
-struct RESTParseError;
+pub struct TNXParseError;
 
 pub struct Processor {
     tracker: SchemaTracker
@@ -70,30 +71,25 @@ pub struct Processor {
 impl Processor {
 
     pub fn new() -> Processor {        
-        let mut st = schema_tracker::SchemaTracker::new();
+        let st = schema_tracker::SchemaTracker::new();
         Processor { tracker: st }
     }   
 
-    pub fn process_transaction<'a>(&'a self, tnx: &'a str) -> Option<RESTTransaction> {
+    pub fn process_transaction<'a>(&'a mut self, tnx: &'a str) -> Result<(), TNXParseError> {
         //let shallow_parsed: RESTTransaction = serde_json::from_str(tnx).unwrap();
-        let shallow_res: Result<RESTTransaction, RESTParseError> = match serde_json::from_str(tnx) {
+        let shallow_res: Result<RESTTransaction, TNXParseError> = match serde_json::from_str(tnx) {
             Ok(v) => Ok(v),
             Err(error) => {
                 eprintln!("{}", error);
-                Err(RESTParseError{})
+                Err(TNXParseError{})
             }
         };
         
-        let shallow_res = shallow_res.unwrap();
-        let tnx_key = shallow_res.get_key();
-        // 
-        let isch: InferredSchema = serde_json::from_str(tnx).unwrap();
-        Some(shallow_res)
-    }
-    
+        let tnx_shallow = shallow_res.unwrap();
+        let tnx_key = tnx_shallow.get_key();
+        self.tracker.update(tnx_key.clone(), &tnx_shallow).unwrap();
 
-    fn commit(&self, key: &str) {
-
+        Ok(())
     }
 }
 
