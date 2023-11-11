@@ -51,7 +51,7 @@ pub struct RESTTransaction<'a> {
 }
 
 impl<'a> RESTTransaction<'a> {
-    fn get_key(&self) -> String {
+    pub fn get_key(&self) -> String {
         format!(
             "{}-{}-{}",
             self.source,
@@ -92,6 +92,7 @@ impl Processor {
     }
 }
 
+#[inline(always)]
 pub fn mask_uri(uri: &str, server: Option<&str>) -> String {
     let uri_parsed = url::Url::parse(uri).unwrap();
     let host: String = match server {
@@ -109,6 +110,7 @@ pub fn mask_uri(uri: &str, server: Option<&str>) -> String {
     //"".to_string()
 }
 
+#[inline(always)]
 fn mask_uri_path<'a>(path: Split<'_, char>) -> String {
     let mut masked_path: Vec<&str> = vec![];
 

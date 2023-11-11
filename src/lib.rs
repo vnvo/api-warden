@@ -1,5 +1,5 @@
 pub mod utils;
-mod processor;
+pub mod processor;
 
 use processor::Processor;
 
